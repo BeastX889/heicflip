@@ -1,0 +1,28 @@
+{
+  "id": "/heicflip/",
+  "name": "Heicflip – HEIC to JPG Converter",
+  "short_name": "Heicflip",
+  "description": "Convert iPhone HEIC photos to JPG, PNG or WebP in bulk. Keeps the date taken, removes location, works offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4f1",
+  "theme_color": "#e0531f",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["photo", "utilities", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": { "image/heic": [".heic"], "image/heif": [".heif", ".hif"] },
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }],
+      "launch_type": "single-client"
+    }
+  ],
+  "launch_handler": { "client_mode": "focus-existing" }
+}
