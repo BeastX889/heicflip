@@ -1,8 +1,8 @@
 // Offline cache: every app file is cached on install, then served cache-first.
-const VERSION = 'heicflip-v1.0.0';
+const VERSION = 'heicflip-v1.1.0';
 const FILES = [
   './', 'index.html', 'privacy.html', 'styles.css', 'manifest.webmanifest',
-  'js/app.js', 'js/ui.js', 'js/icons.js', 'js/convert.js', 'js/exif.js', 'js/zip.js', 'js/ads.js',
+  'js/app.js', 'js/ui.js', 'js/icons.js', 'js/convert.js', 'js/exif.js', 'js/zip.js', 'js/support.js', 'js/gate.js',
   'vendor/heic-to.js', 'vendor/heic-to-LICENSE.txt',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png',
 ];

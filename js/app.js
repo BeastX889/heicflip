@@ -2,9 +2,11 @@ import { h, $, fmtBytes, baseName, plural, toast, tick, pickFiles, saveBlob, dow
 import { icon } from './icons.js';
 import { convertPhoto, FORMATS, isPhotoName } from './convert.js';
 import { zipBlobs } from './zip.js';
-import { adBox } from './ads.js';
+import { initTips, onTipsReady, openSupport, countSave, tipLine } from './support.js';
+import { isAppWindow, showLanding } from './gate.js';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
+export const APP_NAME = 'Heicflip';
 const ACCEPT = '.heic,.heif,.hif,image/heic,image/heif,image/jpeg,image/png,image/webp,image/avif,image/gif,image/bmp';
 const SIZES = [['0', 'Original'], ['4000', '4000 px'], ['2048', '2048 px'], ['1080', '1080 px']];
 
@@ -76,8 +78,7 @@ function workView() {
       h('div', { class: 'set' }, h('span', { class: 'set-l' }, 'Size'), size),
       h('div', { class: 'divider' }),
       keep, loc, detailsNote),
-    h('div', { class: 'card go' }, primary, secondary, progress),
-    adBox());
+    h('div', { class: 'card go' }, primary, secondary, progress));
 
   els = { grid, summary, primary, secondary, progress, qRow, keep, loc, detailsNote };
   syncSettingsUi();
@@ -257,7 +258,7 @@ const outName = it => `${baseName(it.file.name)}.${FORMATS[settings.format].ext}
 async function saveOne(it) {
   if (!it.out) return;
   const name = await saveBlob(it.out.blob, outName(it), FORMATS[settings.format].label + ' image');
-  if (name) toast('Saved ' + name);
+  if (name) { toast('Saved ' + name); afterSave(); }
 }
 
 async function saveAll() {
@@ -279,7 +280,7 @@ async function saveAll() {
       await w.write(it.out.blob); await w.close();
       bar.style.width = Math.round(++saved / done.length * 100) + '%';
     }
-    toast(`Saved ${plural(saved, 'photo')} to “${dir.name}”.`);
+    toast(`Saved ${plural(saved, 'photo')} to “${dir.name}”.`); afterSave();
   } catch (e) {
     console.error(e);
     toast(`Saved ${saved} of ${done.length}. Windows refused the rest: try another folder.`, 'err');
@@ -305,7 +306,7 @@ async function saveZip() {
   try {
     const zip = await zipBlobs(done.map(it => ({ name: outName(it), blob: it.out.blob })), f => { bar.style.width = Math.round(f * 100) + '%'; });
     const name = await saveBlob(zip, `converted-photos-${new Date().toISOString().slice(0, 10)}.zip`, 'ZIP archive');
-    if (name) toast('Saved ' + name);
+    if (name) { toast('Saved ' + name); afterSave(); }
   } catch (e) {
     console.error(e);
     toast('Couldn’t make the ZIP. Try saving to a folder instead.', 'err');
@@ -316,7 +317,7 @@ async function saveZip() {
 function about() {
   dialog('About Heicflip', h('div', { class: 'about' },
     h('p', {}, 'Heicflip converts HEIC photos from iPhones and iPads into JPG, PNG or WebP. Every photo is converted on your own PC: nothing is uploaded, and it works without an internet connection.'),
-    h('p', {}, 'The free version shows one small sponsored box next to the settings. Ads never see your photos.'),
+    h('p', {}, 'Heicflip is free, with no ads and nothing locked. If it saves you time, you can leave an optional tip through the Microsoft Store.'),
     h('p', {}, h('a', { href: 'privacy.html', target: '_blank', rel: 'noopener' }, 'Privacy policy'), ' · ', h('a', { href: 'mailto:lumiolabsdev99@gmail.com' }, 'Contact support')),
     h('p', { class: 'fine' }, `Version ${VERSION} · © 2026 LumioLab`),
     h('p', { class: 'fine' }, 'HEIC decoding uses libheif and heic-to, used under the GNU LGPL 3.0. ',
@@ -380,7 +381,32 @@ window.addEventListener('beforeunload', e => {
   if (running) { e.preventDefault(); e.returnValue = ''; }
 });
 
-render();
+/* ---------------- optional tips ---------------- */
+// One quiet thank-you line under the Save buttons at a few save milestones (3, 10, 25…), never a pop-up.
+function afterSave() {
+  if (!countSave()) return;
+  const go = document.querySelector('.card.go');
+  if (go && !go.querySelector('.tip-line')) go.append(tipLine());
+}
+
+if (!isAppWindow()) {
+  showLanding({
+    name: APP_NAME, tagline: 'HEIC to JPG Converter', icon: 'icons/icon-192.png',
+    storeUrl: '',
+    blurb: 'Convert iPhone HEIC photos to JPG, PNG or WebP in bulk. Keeps the date taken, removes location, and every photo stays on your PC.',
+    features: [
+      ['Hundreds at once', 'Drop a whole folder of iPhone photos and convert them in one go.'],
+      ['Keeps the details', 'Date taken, camera and lens are copied into each JPG.'],
+      ['Private', 'Location is wiped by default, and nothing is ever uploaded.'],
+      ['Save your way', 'Save into a folder or download everything as one ZIP.'],
+    ],
+  });
+} else {
+  render();
+  $('#supportBtn').addEventListener('click', openSupport);
+  onTipsReady(() => { $('#supportBtn').hidden = false; });
+  initTips(APP_NAME);
+}
 
 const devHost = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 if ('serviceWorker' in navigator && !devHost) navigator.serviceWorker.register('sw.js').catch(() => {});

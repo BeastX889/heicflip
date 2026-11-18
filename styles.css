@@ -136,15 +136,6 @@ select{height:34px;padding:0 8px;border:1px solid var(--line-2);border-radius:va
 .progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 
 /* ad space */
-.adbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px 12px;min-height:84px}
-.adlabel{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
-.house{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-.house-ico{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font:700 13px var(--font-display);flex:none}
-.house-txt{flex:1;min-width:0;display:flex;flex-direction:column}
-.house-txt b{font-size:13px}
-.house-txt span{font-size:12px;color:var(--muted)}
-.house-go{font-size:12px;font-weight:600;color:var(--accent);padding:4px 10px;border:1px solid var(--line-2);border-radius:999px}
-.house:hover .house-go{border-color:var(--accent)}
 
 /* dialog, toasts, drop veil */
 dialog{border:0;border-radius:var(--radius);padding:0;background:var(--panel);color:var(--text);box-shadow:var(--shadow-lg);width:min(520px,calc(100vw - 32px))}
@@ -171,3 +162,30 @@ dialog::backdrop{background:rgba(15,10,6,.45)}
   .top{padding:0 12px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- optional Store tips ---------- */
+.support-btn{height:34px;padding:0 12px;font-size:13px;color:var(--muted)}
+.support-btn:hover{color:var(--accent)}
+.tip-line{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:10px;font-size:13px;color:var(--muted)}
+.linkish{background:none;border:0;padding:0;font:inherit;color:var(--accent);font-weight:600;cursor:pointer}
+.linkish:hover{text-decoration:underline}
+.tip-off{margin-left:auto;border:0;background:none;color:var(--muted);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:6px}
+.tip-off:hover{background:var(--panel-2);color:var(--text)}
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
+.tip-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);color:var(--text);cursor:pointer;font:inherit;transition:border-color .15s,transform .15s}
+.tip-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.tip-btn .tip-emoji{font-size:26px;line-height:1.2}
+.tip-btn span:last-child{color:var(--muted);font-size:13px}
+
+/* ---------- Store landing (plain browser) ---------- */
+.landing{min-height:100vh;display:grid;place-items:center;padding:32px 16px;background:var(--bg);box-sizing:border-box}
+.landing-card{max-width:560px;width:100%;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:36px 28px;box-shadow:var(--shadow);box-sizing:border-box}
+.landing-icon{border-radius:16px}
+.landing h1{margin:12px 0 2px;font-size:30px;font-family:var(--font-display)}
+.landing-tag{color:var(--accent);font-weight:600;margin:0 0 12px}
+.landing .store-cta{display:inline-flex;width:auto;padding:0 24px;margin:8px 0 4px;text-decoration:none}
+.landing .hint{color:var(--muted);font-size:13px}
+.landing-feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;text-align:left;margin:22px 0 10px}
+.landing-feats div{padding:12px;border:1px solid var(--line);border-radius:var(--radius-sm)}
+.landing-feats b{display:block;margin-bottom:2px}
+.landing-feats span{color:var(--muted);font-size:13px}
